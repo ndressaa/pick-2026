@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata: 
+  name: nginx
+  namespace: pick
+spec:
+  hosts:
+  - "nginx.pick.io"
+  - "nginx.pick.svc.cluster.local"
+  gateways:
+  - gateway
+  - mesh
+  http:
+  - name: http
+    match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: nginx
+        port:
+          number: 80
+      weight: 50
+    - destination:
+        host: nginx-v2
+        port:
+          number: 80
+      weight: 50
